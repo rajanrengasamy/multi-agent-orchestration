@@ -12,6 +12,7 @@ dist/
 # Claude Code personal files (not shared)
 .claude/settings.local.json
 CLAUDE.local.md
+.mcp.json
 
 # IDE
 .idea/
