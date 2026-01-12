@@ -1,14 +1,25 @@
 # MAO Version 2: Multi-Model Orchestration Layer
 
 > **Status**: Enhancement Specification
-> **Version**: 2.0
+> **Version**: 2.1
 > **Date**: January 2026
+> **Updated**: Latest models + Thinking Always On
 
 ---
 
 ## Executive Summary
 
-MAO V2 introduces a **multi-model orchestration framework** where Claude Opus serves as the intelligent Orchestrator that delegates tasks to diverse AI models (Gemini, GPT, Claude Sonnet) via **PAL-MCP server**. This maximizes agent diversity by leveraging each model's unique strengths.
+MAO V2 introduces a **multi-model orchestration framework** where **Claude Opus 4.5** serves as the intelligent Orchestrator that delegates tasks to diverse AI models via **PAL-MCP server**. This maximizes agent diversity by leveraging each model's unique strengths.
+
+### ⚡ CRITICAL: Thinking Always On
+
+**All models MUST run with thinking/reasoning at maximum level. No exceptions.**
+
+| Provider | Models | Thinking |
+|----------|--------|----------|
+| **Anthropic** | Opus 4.5, Sonnet 4.5, Haiku 4.5 | `effort: high` ⚡ |
+| **OpenAI** | GPT-5.2, GPT-5.2-Codex | Native (built-in) ⚡ |
+| **Google** | Gemini 3 Pro, Gemini 3 Flash | Thinking model ⚡ |
 
 ---
 
@@ -16,13 +27,13 @@ MAO V2 introduces a **multi-model orchestration framework** where Claude Opus se
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                     CLAUDE OPUS (ORCHESTRATOR)                      │
-│                      megathink (always on)                          │
+│                  CLAUDE OPUS 4.5 (ORCHESTRATOR)                     │
+│                   effort: high / megathink ⚡                        │
 │                                                                     │
 │  Responsibilities:                                                  │
 │  - Analyze task requirements and complexity                         │
-│  - Select optimal model for each subtask                            │
-│  - Craft prompts tailored to each model's strengths                 │
+│  - Select LATEST model for each subtask                             │
+│  - Craft prompts with THINKING ALWAYS ON                            │
 │  - Manage parallel workloads via PAL-MCP                            │
 │  - Synthesize results from diverse models                           │
 │  - Resolve conflicts and ensure consistency                         │
@@ -33,6 +44,7 @@ MAO V2 introduces a **multi-model orchestration framework** where Claude Opus se
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         PAL-MCP SERVER                              │
 │            (Provider Abstraction Layer - Model Context Protocol)    │
+│                    ⚡ ALL MODELS WITH THINKING ⚡                     │
 │                                                                     │
 │  Features:                                                          │
 │  - CLI-to-CLI bridging (clink tool)                                 │
@@ -40,109 +52,110 @@ MAO V2 introduces a **multi-model orchestration framework** where Claude Opus se
 │  - Parallel task execution                                          │
 │  - Automatic fallback handling                                      │
 └─────────────────────────────────────────────────────────────────────┘
-         │              │              │              │
-         ▼              ▼              ▼              ▼
-    ┌────────┐    ┌────────┐    ┌────────┐    ┌────────┐
-    │ Gemini │    │  GPT   │    │ Claude │    │ Local  │
-    │  CLI   │    │  CLI   │    │  CLI   │    │(Ollama)│
-    └────────┘    └────────┘    └────────┘    └────────┘
+         │              │              │
+         ▼              ▼              ▼
+    ┌──────────┐  ┌──────────┐  ┌──────────┐
+    │ Gemini 3 │  │  GPT-5.2  │  │ Claude   │
+    │ Pro/Flash│  │  Codex   │  │Sonnet 4.5│
+    │    ⚡     │  │    ⚡     │  │    ⚡     │
+    └──────────┘  └──────────┘  └──────────┘
 ```
 
 ---
 
-## Model Roster & Specializations
+## Model Roster - LATEST ONLY (January 2026)
 
-### Available Models
+### ⚡ ALL MODELS RUN WITH THINKING AT MAXIMUM LEVEL
 
-| Model | Provider | CLI | Strengths | Thinking Mode |
-|-------|----------|-----|-----------|---------------|
-| **Claude Opus 4.5** | Anthropic | `claude` | Orchestration, synthesis, architecture, long-context | `megathink` |
-| **Claude Sonnet 4** | Anthropic | `claude` | Balanced speed/quality, tool use | `ultrathink` |
-| **Claude Haiku 4** | Anthropic | `claude` | Speed, cost efficiency | `think hard` |
-| **Gemini 2.0 Pro** | Google | `gemini` | Long context, deep analysis, multimodal | Max |
-| **Gemini 2.0 Flash** | Google | `gemini` | Speed, quick iterations | Standard |
-| **GPT-4o** | OpenAI | `openai` | Code generation, creativity | High |
-| **GPT Codex 5.2** | OpenAI | `openai` | Code-specialized, completion | High |
-| **O3** | OpenAI | `openai` | Reasoning, algorithm validation | Max |
-| **DeepSeek Coder** | DeepSeek | N/A | Cost-effective coding | Standard |
-| **CodeLlama 34B** | Ollama | `ollama` | Privacy, offline work | N/A |
+| Model | Provider | CLI | Strengths | Thinking |
+|-------|----------|-----|-----------|----------|
+| **Claude Opus 4.5** | Anthropic | `claude` | Orchestration, synthesis, architecture, coding | `effort: high` ⚡ |
+| **Claude Sonnet 4.5** | Anthropic | `claude` | Balanced speed/quality, agents, computer use | `effort: high` ⚡ |
+| **Claude Haiku 4.5** | Anthropic | `claude` | Speed, near-frontier coding | `effort: high` ⚡ |
+| **GPT-5.2** | OpenAI | `openai` | Smartest, thinking built-in, 196k context | Native ⚡ |
+| **GPT-5.2-Codex** | OpenAI | `openai` | Code-specialized, 90%+ ARC-AGI | Native ⚡ |
+| **Gemini 3 Pro** | Google | `gemini` | Higher-reasoning, agent-oriented | Thinking model ⚡ |
+| **Gemini 3 Flash** | Google | `gemini` | Fast, production-ready | Thinking model ⚡ |
 
 ### Model Selection Criteria
 
 ```yaml
+# ⚡ THINKING ALWAYS ON - Latest models only
 selection_criteria:
-  structural_analysis: gemini-pro     # Long context, pattern recognition
-  code_generation: gpt-codex          # Specialized for code
-  algorithm_design: o3                # Strong reasoning
-  implementation: sonnet              # Balanced quality
-  test_generation: gpt-codex          # Test pattern expertise
-  security_review: o3                 # Vulnerability reasoning
-  documentation: gemini-pro           # Document analysis
-  quick_checks: haiku                 # Speed and cost
+  structural_analysis: gemini-3-pro     # Deep reasoning, agent-oriented
+  code_generation: gpt-5.2-codex        # 90%+ ARC-AGI performance
+  algorithm_design: gpt-5.2              # Smartest, native thinking
+  implementation: sonnet-4.5            # Balanced quality, agents
+  test_generation: gpt-5.2-codex        # Code expertise
+  security_review: gpt-5.2               # Deep vulnerability reasoning
+  documentation: gemini-3-pro           # Document analysis
+  quick_checks: haiku-4.5               # Fast with near-frontier quality
 ```
 
 ---
 
 ## Task-to-Model Routing
 
+### ⚡ ALL WITH THINKING ENABLED
+
 ### Development Workstreams
 
 | Workstream | Primary Model | Fallback | Rationale |
 |------------|---------------|----------|-----------|
-| **Schemas** | Gemini Pro | Sonnet | Excels at structural analysis |
-| **Storage** | GPT Codex | Sonnet | Database pattern expertise |
-| **Core Logic** | O3 | Opus | Algorithm validation strength |
-| **Implementation** | Sonnet | GPT Codex | Balanced quality |
-| **Tests** | GPT Codex | Sonnet | Test generation expertise |
+| **Schemas** | Gemini 3 Pro ⚡ | Sonnet 4.5 | Deep structural analysis |
+| **Storage** | GPT-5.2-Codex ⚡ | Sonnet 4.5 | Database patterns, 90%+ ARC-AGI |
+| **Core Logic** | GPT-5.2⚡ | Opus 4.5 | Smartest, native thinking |
+| **Implementation** | Sonnet 4.5 ⚡ | GPT-5.2-Codex | Balanced quality, agents |
+| **Tests** | GPT-5.2-Codex ⚡ | Sonnet 4.5 | Test generation expertise |
 
 ### QA Dimensions
 
 | Dimension | Weight | Primary Model | Rationale |
 |-----------|--------|---------------|-----------|
-| **PRD Compliance** | 30% | Gemini Pro | Document analysis |
-| **Error Handling** | 25% | Sonnet | Balanced review |
-| **Type Safety** | 20% | GPT Codex | TypeScript expertise |
-| **Architecture** | 15% | Opus | High-level patterns |
-| **Security** | 10% | O3 | Vulnerability reasoning |
+| **PRD Compliance** | 30% | Gemini 3 Pro ⚡ | Document analysis |
+| **Error Handling** | 25% | Sonnet 4.5 ⚡ | Balanced review |
+| **Type Safety** | 20% | GPT-5.2-Codex ⚡ | TypeScript expertise |
+| **Architecture** | 15% | Opus 4.5 ⚡ | High-level patterns |
+| **Security** | 10% | GPT-5.2⚡ | Deep vulnerability reasoning |
 
 ---
 
 ## Enhanced Commands
 
-### `/develop` V2
+### `/develop` V2 - ALL WITH THINKING ⚡
 
 ```
 /develop 2, 3
     │
     ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 0: OPUS ORCHESTRATOR (megathink)                          │
+│ PHASE 0: OPUS 4.5 ORCHESTRATOR (effort: high / megathink) ⚡     │
 │                                                                 │
 │ 1. Analyze task complexity and requirements                     │
-│ 2. Run dependency check (Haiku - fast, cheap)                   │
-│ 3. Assign optimal model per workstream                          │
+│ 2. Run dependency check (Haiku 4.5 - fast, thinking on) ⚡       │
+│ 3. Assign LATEST model per workstream                           │
 │ 4. Determine parallel vs sequential strategy                    │
 │ 5. Output execution plan with diversity score                   │
 └─────────────────────────────────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 1-4: MULTI-MODEL EXECUTION (via PAL-MCP)                  │
+│ PHASE 1-4: MULTI-MODEL EXECUTION (via PAL-MCP) ⚡ ALL THINKING   │
 │                                                                 │
 │ Section 2 (parallel):                                           │
-│ ├── Gemini Pro   → Schemas (structural analysis)                │
-│ ├── GPT Codex    → Storage (database patterns)                  │
-│ ├── O3           → Core Logic (algorithm validation)            │
-│ ├── Sonnet       → Implementation (balanced quality)            │
-│ └── GPT Codex    → Tests (test generation)                      │
+│ ├── Gemini 3 Pro  → Schemas (structural analysis) ⚡             │
+│ ├── GPT-5.2-Codex → Storage (database patterns) ⚡               │
+│ ├── GPT-5.2        → Core Logic (smartest reasoning) ⚡           │
+│ ├── Sonnet 4.5    → Implementation (balanced quality) ⚡         │
+│ └── GPT-5.2-Codex → Tests (test generation) ⚡                   │
 │                                                                 │
 │ Section 3 (parallel):                                           │
-│ └── [Same diverse assignment]                                   │
+│ └── [Same diverse assignment - all with thinking]               │
 └─────────────────────────────────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ PHASE 5: SYNTHESIS (Opus megathink)                             │
+│ PHASE 5: SYNTHESIS (Opus 4.5 effort: high / megathink) ⚡        │
 │                                                                 │
 │ 1. Collect results from all models                              │
 │ 2. Resolve conflicts between outputs                            │
@@ -152,45 +165,45 @@ selection_criteria:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### `/qa` V2
+### `/qa` V2 - ALL WITH THINKING ⚡
 
 ```
 /qa 2
     │
     ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ OPUS ORCHESTRATOR assigns dimensions to specialists             │
+│ OPUS 4.5 ORCHESTRATOR assigns dimensions to LATEST models ⚡     │
 └─────────────────────────────────────────────────────────────────┘
     │
-    ├── Gemini Pro → PRD Compliance (30%)
-    ├── Sonnet     → Error Handling (25%)
-    ├── GPT Codex  → Type Safety (20%)
-    ├── Opus       → Architecture (15%)
-    └── O3         → Security (10%)
+    ├── Gemini 3 Pro  → PRD Compliance (30%) ⚡
+    ├── Sonnet 4.5    → Error Handling (25%) ⚡
+    ├── GPT-5.2-Codex → Type Safety (20%) ⚡
+    ├── Opus 4.5      → Architecture (15%) ⚡
+    └── GPT-5.2        → Security (10%) ⚡
     │
     ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ SYNTHESIS: Multi-perspective QA report                          │
-│ - 5 different model viewpoints                                  │
+│ SYNTHESIS: Multi-perspective QA report (Opus 4.5) ⚡             │
+│ - 5 different model viewpoints (all with thinking)              │
 │ - Unified issue categorization                                  │
-│ - Fix assignments to appropriate models                         │
+│ - Fix assignments to appropriate LATEST models                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### `/journal` V2
+### `/journal` V2 - ALL WITH THINKING ⚡
 
 ```
 /journal
     │
     ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ Multi-perspective session analysis:                             │
+│ Multi-perspective session analysis (all with thinking) ⚡        │
 │                                                                 │
-│ ├── Gemini Pro → Technical summary (what was built)             │
-│ ├── Sonnet     → Process reflection (how it went)               │
-│ └── GPT-4o     → Creative insights (lessons learned)            │
+│ ├── Gemini 3 Pro → Technical summary (what was built) ⚡         │
+│ ├── Sonnet 4.5   → Process reflection (how it went) ⚡           │
+│ └── GPT-5.2       → Creative insights (lessons learned) ⚡        │
 │                                                                 │
-│ Opus synthesizes into unified journal entry                     │
+│ Opus 4.5 synthesizes into unified journal entry ⚡               │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -224,100 +237,116 @@ selection_criteria:
 }
 ```
 
-### Model Registry
+### Model Registry - LATEST ONLY (January 2026)
 
 **File:** `.claude/models/registry.md`
 
 ```yaml
+# ⚡ THINKING ALWAYS ON - LATEST MODELS ONLY
+global:
+  thinking_always_on: true
+  use_latest_models: true
+
 models:
-  opus:
+  # ANTHROPIC - Claude 4.5 Series
+  opus-4.5:
     provider: anthropic
     cli: claude
-    capabilities: [orchestration, synthesis, architecture, long-context]
-    thinking: megathink
+    endpoint: claude-opus-4-5-20251124
+    capabilities: [orchestration, synthesis, architecture, coding, agents]
+    thinking: effort: high  # ⚡ Maximum
     role: orchestrator
 
-  sonnet:
+  sonnet-4.5:
     provider: anthropic
     cli: claude
-    capabilities: [implementation, balanced, tool-use]
-    thinking: ultrathink
+    endpoint: claude-sonnet-4-5-20250929
+    capabilities: [implementation, balanced, agents, computer-use]
+    thinking: effort: high  # ⚡ Maximum
     role: worker
 
-  haiku:
+  haiku-4.5:
     provider: anthropic
     cli: claude
-    capabilities: [speed, pre-flight, simple-tasks]
-    thinking: think hard
+    endpoint: claude-haiku-4-5
+    capabilities: [speed, near-frontier-coding, fast-tasks]
+    thinking: effort: high  # ⚡ Maximum
     role: checker
 
-  gemini-pro:
-    provider: google
-    cli: gemini
-    capabilities: [analysis, long-context, multimodal, structural]
-    thinking: max
-    role: analyzer
-
-  gemini-flash:
-    provider: google
-    cli: gemini
-    capabilities: [speed, drafts, iterations]
-    thinking: standard
-    role: drafter
-
-  gpt-codex:
+  # OPENAI - GPT-5.2 Series
+  gpt-5.2:
     provider: openai
     cli: openai
-    capabilities: [code-generation, refactoring, completion, tests]
-    thinking: high
+    endpoint: gpt-5.2
+    capabilities: [smartest, native-thinking, 196k-context, synthesis]
+    thinking: native  # ⚡ Built-in
+    role: reasoner
+
+  gpt-5.2-codex:
+    provider: openai
+    cli: openai
+    endpoint: gpt-5.2-codex
+    capabilities: [code-generation, refactoring, 90%-arc-agi]
+    thinking: native  # ⚡ Built-in
     role: coder
 
-  o3:
-    provider: openai
-    cli: openai
-    capabilities: [reasoning, validation, algorithms, security]
-    thinking: max
-    role: validator
+  # GOOGLE - Gemini 3 Series
+  gemini-3-pro:
+    provider: google
+    cli: gemini
+    endpoint: gemini-3-pro
+    capabilities: [higher-reasoning, agent-oriented, deep-analysis]
+    thinking: thinking-model  # ⚡ Native
+    role: analyzer
+
+  gemini-3-flash:
+    provider: google
+    cli: gemini
+    endpoint: gemini-3-flash
+    capabilities: [fast, production-ready, iterations]
+    thinking: thinking-model  # ⚡ Native
+    role: drafter
 ```
 
-### Task Routing Rules
+### Task Routing Rules - LATEST MODELS (January 2026)
 
 **File:** `.claude/models/task-routing.md`
 
 ```yaml
+# ⚡ THINKING ALWAYS ON - ALL MODELS
 development:
   schema_design:
-    primary: gemini-pro
-    fallback: sonnet
+    primary: gemini-3-pro      # ⚡ Deep structural analysis
+    fallback: sonnet-4.5
   storage_layer:
-    primary: gpt-codex
-    fallback: sonnet
+    primary: gpt-5.2-codex     # ⚡ 90%+ ARC-AGI performance
+    fallback: sonnet-4.5
   core_logic:
-    primary: o3
-    fallback: opus
+    primary: gpt-5.2            # ⚡ Smartest, native thinking
+    fallback: opus-4.5
   implementation:
-    primary: sonnet
-    fallback: gpt-codex
+    primary: sonnet-4.5        # ⚡ Balanced quality, agents
+    fallback: gpt-5.2-codex
   tests:
-    primary: gpt-codex
-    fallback: sonnet
+    primary: gpt-5.2-codex     # ⚡ Code expertise
+    fallback: sonnet-4.5
 
 qa:
   prd_compliance:
-    primary: gemini-pro
-    fallback: opus
+    primary: gemini-3-pro      # ⚡ Document analysis
+    fallback: opus-4.5
   error_handling:
-    primary: sonnet
-    fallback: opus
+    primary: sonnet-4.5        # ⚡ Balanced review
+    fallback: opus-4.5
   type_safety:
-    primary: gpt-codex
-    fallback: sonnet
+    primary: gpt-5.2-codex     # ⚡ TypeScript expertise
+    fallback: sonnet-4.5
   architecture:
-    primary: opus
-    fallback: gemini-pro
+    primary: opus-4.5          # ⚡ High-level patterns
+    fallback: gemini-3-pro
   security:
-    primary: o3
-    fallback: opus
+    primary: gpt-5.2            # ⚡ Deep vulnerability reasoning
+    fallback: opus-4.5
 
 pre_flight:
   dependency_check:
