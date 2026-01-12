@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '=== $PROJECT_NAME ===' && ls ~/.${PROJECT_SLUG:-project}/context/lancedb/ 2>/dev/null && echo 'VectorDB: AVAILABLE' || echo 'VectorDB: NOT FOUND - run npm run seed-context'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx prettier --write \"$CLAUDE_TOOL_INPUT_FILE_PATH\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./scripts/validate-protected.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

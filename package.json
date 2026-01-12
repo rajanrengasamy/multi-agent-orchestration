@@ -1,27 +1,61 @@
 {
-  "name": "multi-agent-orchestration",
-  "version": "1.0.0",
-  "description": "Claude Code project template with multi-agent orchestration and VectorDB context",
+  "name": "mao",
+  "version": "2.0.0",
+  "description": "Multi-Agent Orchestration for Claude Code - parallel agents, VectorDB context, framework-aware rules",
   "type": "module",
+  "bin": {
+    "mao": "./dist/cli/index.js"
+  },
+  "main": "./dist/context/index.js",
+  "exports": {
+    ".": "./dist/context/index.js",
+    "./context": "./dist/context/index.js"
+  },
+  "files": [
+    "dist/",
+    "templates/"
+  ],
   "scripts": {
     "build": "tsc",
+    "build:cli": "tsc && chmod +x dist/cli/index.js",
+    "prepublishOnly": "npm run build:cli",
     "seed-context": "npx tsx scripts/seed-context.ts",
     "retrieve": "npx tsx scripts/retrieve-context.ts",
     "test": "echo \"No tests configured yet\" && exit 0",
-    "lint": "npx prettier --check \"src/**/*.ts\" \"scripts/**/*.ts\"",
-    "format": "npx prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\""
+    "lint": "npx prettier --check \"src/**/*.ts\"",
+    "format": "npx prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
+    "@inquirer/prompts": "^7.0.0",
     "@lancedb/lancedb": "^0.9.0",
+    "chalk": "^5.3.0",
     "dotenv": "^16.4.5",
+    "fs-extra": "^11.2.0",
     "openai": "^4.70.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.10.0",
     "prettier": "^3.3.3",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "ai",
+    "agents",
+    "multi-agent",
+    "orchestration",
+    "vectordb",
+    "scaffolding"
+  ],
+  "author": "Rajan Rengasamy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rajanrengasamy/mao.git"
   },
   "engines": {
     "node": ">=18.0.0"

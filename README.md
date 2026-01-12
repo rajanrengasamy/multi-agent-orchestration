@@ -1,4 +1,4 @@
-# Multi-Agent Orchestration Template
+# MAO - Multi-Agent Orchestration
 
 A Claude Code project template with multi-agent orchestration, dependency-aware parallel development, and VectorDB semantic context retrieval.
 
@@ -13,44 +13,58 @@ A Claude Code project template with multi-agent orchestration, dependency-aware 
 - **Hooks System**: Auto-formatting, file protection, session startup checks
 - **Modular Rules**: Path-specific coding conventions
 
-## Quick Start
+## Installation
 
-### 1. Clone the Template
+### Option A: Create a New Project (npm)
 
 ```bash
-git clone https://github.com/rajanrengasamy/multi-agent-orchestration.git my-project
+npx mao create my-project
 cd my-project
 ```
 
-### 2. Initialize Your Project
+### Option B: Add to Existing Project (npm)
 
 ```bash
+cd your-existing-project
+npx mao adopt
+```
+
+This will:
+- Add `.claude/` configuration (agents, commands, skills, rules)
+- Add VectorDB context infrastructure
+- Merge MAO dependencies into your `package.json`
+
+### Option C: Clone Template (git)
+
+```bash
+git clone https://github.com/rajanrengasamy/mao.git my-project
+cd my-project
 ./scripts/init-project.sh "My Project Name"
 ```
 
-### 3. Configure Environment
+## Quick Start
+
+### 1. Configure Environment
 
 Add your OpenAI API key to `.env`:
 ```
 OPENAI_API_KEY=sk-...
 ```
 
-### 4. Seed the VectorDB
+### 2. Seed the VectorDB
 
 ```bash
 npm run seed-context
 ```
 
-### 5. Start Using Commands
+### 3. Start Using Commands
 
 ```bash
 # In Claude Code
 /develop <section>    # Develop features (5 agents per section)
 /develop 2, 3         # Multi-section with dependency check
 /qa <section>         # Run QA review
-/journal              # Record session notes
-/sync                 # Git sync workflow
-/startagain           # Bootstrap new session
+/setup-project        # Configure project profile and rules
 ```
 
 ## Multi-Section Development
