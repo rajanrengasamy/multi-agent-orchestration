@@ -3,12 +3,22 @@ name: qa-section
 description: Run complete QA cycle on a single TODO section. Reviews code, identifies issues, fixes them, re-verifies.
 context: fork
 model: opus
+thinking: ultrathink
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Task, TodoWrite
 ---
 
 # QA Section Skill
 
-Run a comprehensive quality assurance cycle on a completed TODO section.
+Run a comprehensive quality assurance cycle on a completed TODO section using **latest Opus with ultrathink** for deep analysis.
+
+## Thinking Configuration
+
+```yaml
+orchestrator: opus (latest) + ultrathink
+qa_reviewer: opus (latest) + ultrathink
+fix_agents: opus (latest) + ultrathink
+thinking: ALWAYS ON (ultrathink keyword in all agent prompts)
+```
 
 ## Usage
 
@@ -46,10 +56,13 @@ fi
 
 ### Step 3: First QA Pass with QA Reviewer Agent
 
-Spawn a QA reviewer agent (using Haiku for fast initial review):
+Spawn a QA reviewer agent with ultrathink for thorough analysis:
 
 ```
-Task (QA Review): "Review the implementation of [section] against the 5-dimension QA framework in dimensions.md.
+Task (QA Review):
+ultrathink
+
+Review the implementation of [section] against the 5-dimension QA framework in dimensions.md.
 
 Check:
 1. PRD Compliance (30%): Does implementation match requirements?
@@ -94,18 +107,28 @@ const lowIssues = issues.filter(i => i.severity === 'LOW');
 
 ### Step 5: Fix Issues with Dev Agents
 
-Spawn 5 parallel dev agents (using Opus) to fix categorized issues:
+Spawn 5 parallel dev agents (using Opus + ultrathink) to fix categorized issues:
 
 ```
-Task 1 (PRD Fixes): "Fix all PRD compliance issues: [list issues]. Ensure implementation matches requirements."
+Task 1 (PRD Fixes):
+ultrathink
+Fix all PRD compliance issues: [list issues]. Ensure implementation matches requirements.
 
-Task 2 (Error Handling): "Fix all error handling issues: [list issues]. Add proper try/catch, null checks, API error handling."
+Task 2 (Error Handling):
+ultrathink
+Fix all error handling issues: [list issues]. Add proper try/catch, null checks, API error handling.
 
-Task 3 (Type Safety): "Fix all type safety issues: [list issues]. Remove any, add proper types, align with Zod schemas."
+Task 3 (Type Safety):
+ultrathink
+Fix all type safety issues: [list issues]. Remove any, add proper types, align with Zod schemas.
 
-Task 4 (Architecture): "Fix all architecture issues: [list issues]. Improve modularity, remove duplication, better organization."
+Task 4 (Architecture):
+ultrathink
+Fix all architecture issues: [list issues]. Improve modularity, remove duplication, better organization.
 
-Task 5 (Security): "Fix all security issues: [list issues]. Add input validation, remove hardcoded secrets, prevent injection."
+Task 5 (Security):
+ultrathink
+Fix all security issues: [list issues]. Add input validation, remove hardcoded secrets, prevent injection.
 ```
 
 Each agent should:
@@ -116,10 +139,13 @@ Each agent should:
 
 ### Step 6: Re-verification with QA Reviewer
 
-After fixes are applied, run another QA pass:
+After fixes are applied, run another QA pass with ultrathink:
 
 ```
-Task (Re-verify): "Re-review [section] implementation.
+Task (Re-verify):
+ultrathink
+
+Re-review [section] implementation.
 
 Verify:
 1. All previously identified issues are fixed

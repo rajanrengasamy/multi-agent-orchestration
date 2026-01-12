@@ -1,6 +1,6 @@
 ---
 name: develop-section
-description: Develop a single TODO section with parallel dev agents. Use for implementing specific sections from the TODO list.
+description: Develop a single TODO section with 5 parallel dev agents using latest Opus with extended thinking
 context: fork
 model: opus
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Task, TodoWrite
@@ -8,7 +8,16 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Task, TodoWrite
 
 # Develop Section Skill
 
-Implement a specific TODO section using parallel development agents for maximum efficiency.
+Implement a specific TODO section using 5 parallel development agents running on **latest Opus with ultrathink** for maximum reasoning depth.
+
+## Model Configuration
+
+```yaml
+orchestrator: opus (latest) + ultrathink
+dev_agents: opus (latest) + ultrathink
+total_agents: 5 per section
+thinking: ALWAYS ON (ultrathink keyword in all prompts)
+```
 
 ## Usage
 
@@ -32,7 +41,7 @@ else
 fi
 
 # Retrieve context for the section
-npm run retrieve -- "$ARGUMENTS"
+npx tsx scripts/retrieve-context.ts "$ARGUMENTS"
 ```
 
 ### Step 2: Understand Requirements
@@ -49,35 +58,109 @@ Read the TODO.md file to get the specific tasks for this section.
 
 Divide the section implementation into these workstreams:
 
-| Workstream | Focus Area | Priority |
-|------------|------------|----------|
-| **Schemas** | Zod schemas, type definitions, interfaces | 1 |
-| **Storage** | Database models, file storage, caching | 2 |
-| **Core Logic** | Business logic, algorithms, transformations | 3 |
-| **Implementation** | API endpoints, UI components, integrations | 4 |
-| **Tests** | Unit tests, integration tests, fixtures | 5 |
+| Workstream | Focus Area | Model | Thinking |
+|------------|------------|-------|----------|
+| **1. Schemas** | Zod schemas, type definitions, interfaces | Opus (latest) | ultrathink |
+| **2. Storage** | Database models, file storage, caching | Opus (latest) | ultrathink |
+| **3. Core Logic** | Business logic, algorithms, transformations | Opus (latest) | ultrathink |
+| **4. Implementation** | API endpoints, UI components, integrations | Opus (latest) | ultrathink |
+| **5. Tests** | Unit tests, integration tests, fixtures | Opus (latest) | ultrathink |
 
 ### Step 4: Spawn 5 Dev Agents in Parallel
 
-Use the Task tool to spawn parallel development agents:
+Use the Task tool to spawn parallel development agents. **CRITICAL**: Always include `ultrathink` in the prompt to enable extended thinking.
 
+**Agent 1 - Schemas:**
 ```
-Task 1 (Schemas): "Implement Zod schemas and TypeScript types for [section]. Follow patterns in patterns.md. Output: src/schemas/[section].ts"
+Task: Implement Zod schemas and TypeScript types for $ARGUMENTS
 
-Task 2 (Storage): "Implement storage layer for [section]. Use atomic writes, proper error handling. Output: src/storage/[section].ts"
+ultrathink
 
-Task 3 (Core Logic): "Implement core business logic for [section]. Follow functional patterns. Output: src/core/[section].ts"
+Context from VectorDB: [PASTE CONTEXT]
+Patterns to follow: Read patterns.md
 
-Task 4 (Implementation): "Implement [section] feature using schemas and core logic. Output: src/features/[section]/"
+Requirements:
+- Strict TypeScript (no `any`, enable `noUncheckedIndexedAccess`)
+- Zod schemas for all data structures
+- Export both schema and inferred types
+- Include validation helpers
 
-Task 5 (Tests): "Write comprehensive tests for [section]. Cover edge cases. Output: tests/[section]/"
+Output: src/schemas/[section].ts
 ```
 
-Each agent should:
-- Read the patterns.md file for coding standards
-- Use strict TypeScript (no `any`)
-- Implement proper error handling
-- Write atomic, focused code
+**Agent 2 - Storage:**
+```
+Task: Implement storage layer for $ARGUMENTS
+
+ultrathink
+
+Context from VectorDB: [PASTE CONTEXT]
+Schema types from: src/schemas/[section].ts
+
+Requirements:
+- Atomic write operations
+- Proper error handling with typed errors
+- Transaction support where needed
+- Use repository pattern
+
+Output: src/storage/[section].ts
+```
+
+**Agent 3 - Core Logic:**
+```
+Task: Implement core business logic for $ARGUMENTS
+
+ultrathink
+
+Context from VectorDB: [PASTE CONTEXT]
+Types from: src/schemas/[section].ts
+Storage from: src/storage/[section].ts
+
+Requirements:
+- Pure functions where possible
+- Functional composition patterns
+- Comprehensive error handling
+- No side effects in core logic
+
+Output: src/core/[section].ts
+```
+
+**Agent 4 - Implementation:**
+```
+Task: Implement feature integration for $ARGUMENTS
+
+ultrathink
+
+Context from VectorDB: [PASTE CONTEXT]
+All module dependencies available
+
+Requirements:
+- Wire together schemas, storage, and core logic
+- API endpoints or UI components as needed
+- Input validation at boundaries
+- Proper logging and monitoring hooks
+
+Output: src/features/[section]/
+```
+
+**Agent 5 - Tests:**
+```
+Task: Write comprehensive tests for $ARGUMENTS
+
+ultrathink
+
+Context from VectorDB: [PASTE CONTEXT]
+All implementation files available
+
+Requirements:
+- Unit tests for all public functions
+- Integration tests for data flows
+- Edge case coverage
+- Mocked external dependencies
+- Minimum 80% coverage target
+
+Output: tests/[section]/
+```
 
 ### Step 5: Consolidation
 
@@ -87,13 +170,12 @@ After all agents complete:
 2. **Verify Integration**: Ensure all pieces work together
 3. **Run Type Check**: Execute `npx tsc --noEmit`
 4. **Run Tests**: Execute `npm test`
-5. **Update TODO**: Mark section as complete if all passes
+5. **Run Build**: Execute `npm run build`
+6. **Update TODO**: Mark section as complete if all passes
 
 ```bash
-# Verification commands
-npx tsc --noEmit
-npm test
-npm run build
+# Verification commands (run sequentially)
+npx tsc --noEmit && npm test && npm run build
 ```
 
 ### Step 6: Summary Report
@@ -103,33 +185,53 @@ Generate a summary in this format:
 ```markdown
 ## Development Summary: [Section Name]
 
+### Model Configuration
+- Orchestrator: Opus (latest) + ultrathink
+- Dev Agents: 5x Opus (latest) + ultrathink
+- Total thinking tokens used: [estimate]
+
 ### Completed Tasks
-- [ ] Schemas: [status]
-- [ ] Storage: [status]
-- [ ] Core Logic: [status]
-- [ ] Implementation: [status]
-- [ ] Tests: [status]
+- [x] Schemas: Complete
+- [x] Storage: Complete
+- [x] Core Logic: Complete
+- [x] Implementation: Complete
+- [x] Tests: Complete
 
 ### Files Created/Modified
-- `src/schemas/[section].ts`
-- `src/storage/[section].ts`
-- `src/core/[section].ts`
-- `src/features/[section]/`
-- `tests/[section]/`
+| File | Purpose | Lines |
+|------|---------|-------|
+| `src/schemas/[section].ts` | Zod schemas and types | ~X |
+| `src/storage/[section].ts` | Data persistence | ~X |
+| `src/core/[section].ts` | Business logic | ~X |
+| `src/features/[section]/` | Feature integration | ~X |
+| `tests/[section]/` | Test suite | ~X |
 
 ### Verification Results
 - TypeScript: [PASS/FAIL]
-- Tests: [X/Y passing]
+- Tests: [X/Y passing, Z% coverage]
 - Build: [PASS/FAIL]
 
+### Architecture Decisions
+[Key decisions made during implementation with reasoning]
+
 ### Notes
-[Any issues encountered or decisions made]
+[Any issues encountered or follow-up items]
 ```
 
 ## Error Handling
 
 If any workstream fails:
-1. Log the error details
-2. Attempt automatic fix with context
-3. If fix fails, report to user with specific failure
+1. Log the error details with full context
+2. Attempt automatic fix with additional reasoning (re-run with megathink)
+3. If fix fails, report to user with specific failure and suggested resolution
 4. Do not mark section complete until all passes
+
+## Thinking Keywords Reference
+
+| Keyword | Thinking Budget | Use Case |
+|---------|-----------------|----------|
+| `think` | Low | Simple tasks |
+| `think hard` | Medium | Moderate complexity |
+| `think harder` | High | Complex reasoning |
+| `ultrathink` | Very High | Deep implementation (DEFAULT) |
+| `megathink` | Maximum | Error recovery, architecture |
