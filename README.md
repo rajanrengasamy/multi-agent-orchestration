@@ -18,7 +18,7 @@ A Claude Code project template with multi-agent orchestration, dependency-aware 
 ### Option A: Create a New Project (npm)
 
 ```bash
-npx mao create my-project
+npx makeit-mao create my-project
 cd my-project
 ```
 
@@ -26,7 +26,7 @@ cd my-project
 
 ```bash
 cd your-existing-project
-npx mao adopt
+npx makeit-mao adopt
 ```
 
 This will:

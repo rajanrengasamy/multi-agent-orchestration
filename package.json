@@ -1,10 +1,10 @@
 {
-  "name": "mao",
+  "name": "makeit-mao",
   "version": "2.0.0",
   "description": "Multi-Agent Orchestration for Claude Code - parallel agents, VectorDB context, framework-aware rules",
   "type": "module",
   "bin": {
-    "mao": "./dist/cli/index.js"
+    "mao": "dist/cli/index.js"
   },
   "main": "./dist/context/index.js",
   "exports": {
@@ -55,7 +55,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rajanrengasamy/mao.git"
+    "url": "git+https://github.com/rajanrengasamy/mao.git"
   },
   "engines": {
     "node": ">=18.0.0"
