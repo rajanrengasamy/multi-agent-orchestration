@@ -55,7 +55,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rajanrengasamy/mao.git"
+    "url": "git+https://github.com/rajanrengasamy/multi-agent-orchestration.git"
   },
   "engines": {
     "node": ">=18.0.0"
