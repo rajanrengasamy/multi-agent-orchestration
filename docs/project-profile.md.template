@@ -1,0 +1,58 @@
+# Project Profile
+
+> This file captures what you're building and your tech stack.
+> Created during `/setup-project` to help Claude tailor recommendations.
+
+## Overview
+
+<!-- Describe what you're building in 1-3 sentences -->
+
+[User's description of what they're building]
+
+## Project Type
+
+[Web app / Mobile app / API / CLI / Other]
+
+## Tech Stack
+
+- **Frontend**: [Selected frameworks, e.g., React/Next.js, Tailwind CSS]
+- **Backend**: [Selected frameworks, e.g., Node.js/Express, Python/FastAPI]
+- **Deployment**: [e.g., Vercel, if selected]
+- **BaaS**: [e.g., Convex, if selected]
+- **Other**: [Additional selections]
+
+## Requirements Status
+
+- [ ] PRD defined in `docs/`
+- [ ] Architecture planned
+- [ ] Tasks breakdown in `todo/tasks.md`
+
+## Rules Customization
+
+<!-- Updated by /setup-project based on user choices -->
+
+- [ ] React patterns added (dangerouslySetInnerHTML, hooks, Testing Library)
+- [ ] Vue patterns added (template security, composables)
+- [ ] Convex patterns added (schema validation, real-time)
+- [ ] Tailwind patterns added (class organization, component extraction)
+- [ ] Using base rules only
+
+## Created
+
+[Timestamp from setup]
+
+---
+
+## Stack Reference
+
+Based on your selections, consult these rule sections:
+
+| Stack | Primary Rule File | Key Sections |
+|-------|-------------------|--------------|
+| React/Next.js | `code-style.md` | TypeScript, React Hooks |
+| Vue/Nuxt | `code-style.md` | TypeScript, Vue Composables |
+| SwiftUI | `code-style.md` | SwiftUI section |
+| Python/FastAPI | `code-style.md`, `testing.md` | Python sections |
+| Convex | `api-design.md`, `security.md` | Convex Patterns, Convex Security |
+| Tailwind CSS | `code-style.md` | Tailwind CSS section |
+| Security (all) | `security.md` | Universal Principles + stack-specific |

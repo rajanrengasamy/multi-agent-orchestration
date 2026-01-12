@@ -4,29 +4,5 @@
     "MCP_TOOL_TIMEOUT": "120000",
     "MAX_MCP_OUTPUT_TOKENS": "50000"
   },
-  "model": {
-    "default": "opus",
-    "thinking": {
-      "enabled": true,
-      "defaultKeyword": "ultrathink"
-    }
-  },
-  "agents": {
-    "dev": {
-      "model": "opus",
-      "thinking": "ultrathink"
-    },
-    "qa-reviewer": {
-      "model": "opus",
-      "thinking": "ultrathink"
-    },
-    "dependency-check": {
-      "model": "haiku",
-      "thinking": "think hard"
-    },
-    "code-reviewer": {
-      "model": "haiku",
-      "thinking": "think hard"
-    }
-  }
+  "model": "opus"
 }

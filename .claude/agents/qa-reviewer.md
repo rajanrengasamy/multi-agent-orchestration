@@ -2,7 +2,7 @@
 name: qa-reviewer
 description: Deep QA review against requirements. Creates detailed issue reports.
 model: opus
-thinking: ultrathink
+color: yellow
 ---
 
 # QA Reviewer Agent

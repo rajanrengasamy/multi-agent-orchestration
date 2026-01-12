@@ -2,7 +2,7 @@
 name: dev
 description: Expert developer for implementing features, writing code, fixing bugs. Use for any task requiring code changes.
 model: opus
-thinking: ultrathink
+color: green
 ---
 
 # Developer Agent

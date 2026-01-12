@@ -85,6 +85,17 @@ if [ -f "CLAUDE.local.md.template" ]; then
     echo -e "  ${GREEN}✓${NC} Created CLAUDE.local.md"
 fi
 
+echo ""
+echo -e "${GREEN}Step 2b:${NC} Creating project profile..."
+
+# Copy project profile template
+if [ -f "docs/project-profile.md.template" ]; then
+    cp docs/project-profile.md.template docs/project-profile.md
+    echo -e "  ${GREEN}✓${NC} Created docs/project-profile.md (customize during /setup-project)"
+else
+    echo -e "  ${YELLOW}⚠${NC} project-profile.md.template not found, skipping"
+fi
+
 # Create .env from example if it doesn't exist
 if [ -f ".env.example" ] && [ ! -f ".env" ]; then
     cp .env.example .env
@@ -136,9 +147,8 @@ echo ""
 echo "1. Add your OpenAI API key to .env:"
 echo -e "   ${BLUE}OPENAI_API_KEY=sk-...${NC}"
 echo ""
-echo "2. Add your project documentation to docs/"
-echo "   - docs/prd.md (Product Requirements)"
-echo "   - docs/architecture.md (System Design)"
+echo "2. Run /setup-project to configure your project profile"
+echo "   This will ask about your tech stack and customize rules"
 echo ""
 echo "3. Define your tasks in todo/tasks.md"
 echo ""

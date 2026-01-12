@@ -80,9 +80,9 @@ export async function getCurrentTodoState(
     const db = await getDB(config);
     const table = await db.openTable(COLLECTIONS.TODO_SNAPSHOTS);
 
-    // Get most recent by timestamp
+    // Get most recent by timestamp - use query() for non-vector operations
     const results = await table
-      .search()
+      .query()
       .limit(1)
       .toArray();
 
@@ -146,8 +146,9 @@ export async function getRecentSessions(
     const db = await getDB(config);
     const table = await db.openTable(COLLECTIONS.SESSION_SUMMARIES);
 
+    // Use query() for non-vector operations
     const results = await table
-      .search()
+      .query()
       .limit(limit)
       .toArray();
 

@@ -2,8 +2,8 @@
 name: debugger
 description: Bug investigation and fixing specialist. Root cause analysis and targeted fixes.
 model: opus
-thinking: ultrathink
-allowed-tools: Read, Edit, Bash, Grep, Glob
+color: red
+tools: ["Read", "Edit", "Bash", "Grep", "Glob"]
 ---
 
 # Debugger Agent

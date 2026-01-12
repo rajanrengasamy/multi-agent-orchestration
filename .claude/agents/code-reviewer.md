@@ -2,8 +2,8 @@
 name: code-reviewer
 description: Read-only code review specialist. Analyzes code quality without making changes.
 model: haiku
-thinking: think hard
-allowed-tools: Read, Grep, Glob, Bash
+color: blue
+tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
 # Code Reviewer Agent
