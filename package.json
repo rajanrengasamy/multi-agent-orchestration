@@ -1,0 +1,29 @@
+{
+  "name": "multi-agent-orchestration",
+  "version": "1.0.0",
+  "description": "Claude Code project template with multi-agent orchestration and VectorDB context",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "seed-context": "npx tsx scripts/seed-context.ts",
+    "retrieve": "npx tsx scripts/retrieve-context.ts",
+    "test": "echo \"No tests configured yet\" && exit 0",
+    "lint": "npx prettier --check \"src/**/*.ts\" \"scripts/**/*.ts\"",
+    "format": "npx prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\""
+  },
+  "dependencies": {
+    "@lancedb/lancedb": "^0.9.0",
+    "dotenv": "^16.4.5",
+    "openai": "^4.70.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

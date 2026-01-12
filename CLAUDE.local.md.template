@@ -1,0 +1,15 @@
+# Personal Preferences
+
+This file contains your personal preferences and is automatically git-ignored.
+Rename this file to `CLAUDE.local.md` after running `init-project.sh`.
+
+## My Preferences
+- [Add your personal coding preferences here]
+- [e.g., Preferred variable naming conventions]
+- [e.g., Preferred testing approaches]
+
+## Personal Shortcuts
+- [Add any personal workflow shortcuts]
+
+## Notes
+- [Personal notes about this project]

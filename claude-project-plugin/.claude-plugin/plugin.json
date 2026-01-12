@@ -1,0 +1,10 @@
+{
+  "name": "project-workflow",
+  "description": "Standard project workflow commands: journal, sync, startagain",
+  "version": "1.0.0",
+  "author": {
+    "name": "Your Name"
+  },
+  "repository": "https://github.com/rajanrengasamy/claude-project-plugin",
+  "license": "MIT"
+}
