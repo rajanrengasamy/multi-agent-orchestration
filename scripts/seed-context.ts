@@ -85,14 +85,23 @@ async function seedContext() {
   // Parse and index journal entries
   console.log('4. Indexing journal entries...');
   const journalPath = path.join(PROJECT_ROOT, 'journal.md');
-  if (fs.existsSync(journalPath)) {
+  if (!fs.existsSync(journalPath)) {
+    // Auto-generate empty journal file
+    const journalTemplate = `# Project Journal
+
+Session history and development notes.
+
+<!-- Entries are added via /journal command -->
+`;
+    fs.writeFileSync(journalPath, journalTemplate, 'utf-8');
+    console.log('   Created empty journal.md');
+    console.log('   Journal entries will be indexed when created via /journal\n');
+  } else {
     const content = fs.readFileSync(journalPath, 'utf-8');
     const entries = parseJournalEntries(content);
     console.log(`   ${entries.length} journal entries found`);
     // Note: Journal entries are stored individually via /journal command
     console.log('   Journal entries will be indexed when created via /journal\n');
-  } else {
-    console.log('   No journal.md found, skipping.\n');
   }
 
   console.log('=== VectorDB Seeding Complete ===');
