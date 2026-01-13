@@ -21,7 +21,9 @@
     "prepublishOnly": "npm run build:cli",
     "seed-context": "npx tsx scripts/seed-context.ts",
     "retrieve": "npx tsx scripts/retrieve-context.ts",
-    "test": "echo \"No tests configured yet\" && exit 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "lint": "npx prettier --check \"src/**/*.ts\"",
     "format": "npx prettier --write \"src/**/*.ts\""
   },
@@ -37,9 +39,11 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.10.0",
+    "@vitest/coverage-v8": "^4.0.17",
     "prettier": "^3.3.3",
     "tsx": "^4.19.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vitest": "^4.0.17"
   },
   "keywords": [
     "claude",
