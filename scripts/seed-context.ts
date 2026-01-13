@@ -47,18 +47,27 @@ async function seedContext() {
     console.log('   No docs/ directory found, skipping.\n');
   }
 
-  // Index TODO state
+  // Index TODO state from todo/*.md
   console.log('3. Indexing TODO state...');
-  const todoPath = path.join(PROJECT_ROOT, 'todo', 'tasks.md');
-  if (fs.existsSync(todoPath)) {
-    const content = fs.readFileSync(todoPath, 'utf-8');
-    const todoState = parseTodoMarkdown(content);
-    await snapshotTodoState(todoState);
-    console.log(
-      `   ${todoState.sections.length} sections, ${todoState.totalItems} items (${todoState.overallCompletionPct}% complete)\n`
-    );
+  const todoDir = path.join(PROJECT_ROOT, 'todo');
+  if (fs.existsSync(todoDir)) {
+    const todoFiles = fs.readdirSync(todoDir).filter((f) => f.endsWith('.md'));
+    let totalTodoItems = 0;
+
+    for (const file of todoFiles) {
+      const content = fs.readFileSync(path.join(todoDir, file), 'utf-8');
+      const todoState = parseTodoMarkdown(content);
+      if (todoState.totalItems > 0) {
+        await snapshotTodoState(todoState);
+        totalTodoItems += todoState.totalItems;
+        console.log(
+          `   - ${file}: ${todoState.sections.length} sections, ${todoState.totalItems} items (${todoState.overallCompletionPct}% complete)`
+        );
+      }
+    }
+    console.log(`   Total: ${totalTodoItems} items indexed.\n`);
   } else {
-    console.log('   No todo/tasks.md found, skipping.\n');
+    console.log('   No todo/ directory found, skipping.\n');
   }
 
   // Parse and index journal entries

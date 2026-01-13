@@ -29,12 +29,20 @@ Create `prd.md` with:
 
 ## Usage with VectorDB
 
-When you run `npm run seed-context`, the documentation in this directory will be:
+When you run `npm run seed-context`, the following are indexed:
+
+| Directory | What's Indexed | Purpose |
+|-----------|----------------|---------|
+| `docs/*.md` | All markdown files | PRD, architecture, specs |
+| `todo/*.md` | All markdown files | Task tracking (tasks.md, todo.md, etc.) |
+| `journal.md` | Root journal file | Session history |
+
+Each file is:
 1. Parsed and chunked by section
 2. Embedded using OpenAI embeddings
 3. Stored in VectorDB for semantic search
 
-Agents can then query relevant documentation sections using:
+Agents can then query relevant context using:
 ```bash
 npx tsx scripts/retrieve-context.ts "your query here"
 ```
