@@ -5,6 +5,7 @@ export * from './types.js';
 export {
   queryPrdSections,
   getCurrentTodoState,
+  queryTodoSections,
   queryJournalEntries,
   getRecentSessions,
   getContextBundle,
@@ -16,6 +17,9 @@ export {
   initializeVectorDB,
   indexPrdSections,
   snapshotTodoState,
+  indexTodoSections,
+  reindexTodoSections,
+  todoStateToIndexedSections,
   storeJournalEntry,
   storeSessionSummary,
   parseMarkdownSections,
