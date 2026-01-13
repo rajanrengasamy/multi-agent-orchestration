@@ -69,7 +69,7 @@ cat .mcp.json
 
 ```bash
 # Check database exists
-ls ~/.${PROJECT_SLUG:-project}/context/lancedb/
+ls ./.lancedb/
 
 # Test retrieval
 npx tsx scripts/retrieve-context.ts "test query"

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '=== $PROJECT_NAME ===' && ls ~/.${PROJECT_SLUG:-project}/context/lancedb/ 2>/dev/null && echo 'VectorDB: AVAILABLE' || echo 'VectorDB: NOT FOUND - run npm run seed-context'"
+            "command": "echo '=== $PROJECT_NAME ===' && ls ./.lancedb/ 2>/dev/null && echo 'VectorDB: AVAILABLE' || echo 'VectorDB: NOT FOUND - run npm run seed-context'"
           }
         ]
       }

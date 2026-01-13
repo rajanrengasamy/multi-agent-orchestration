@@ -47,7 +47,7 @@ Retrieve context to understand requirements:
 
 ```bash
 # Check VectorDB availability
-if ls ~/.${PROJECT_SLUG:-project}/context/lancedb/ 2>/dev/null; then
+if ls ./.lancedb/ 2>/dev/null; then
   npm run retrieve -- "$ARGUMENTS"
 else
   echo "WARNING: VectorDB not available. QA will proceed without PRD context."

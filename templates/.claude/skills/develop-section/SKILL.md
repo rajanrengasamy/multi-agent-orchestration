@@ -33,7 +33,7 @@ First, check if VectorDB is available and retrieve relevant context:
 
 ```bash
 # Check VectorDB availability
-if ls ~/.${PROJECT_SLUG:-project}/context/lancedb/ 2>/dev/null; then
+if ls ./.lancedb/ 2>/dev/null; then
   echo "VectorDB available"
 else
   echo "ERROR: VectorDB not found. Run 'npm run seed-context' first."

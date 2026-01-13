@@ -21,7 +21,7 @@ Orchestrate comprehensive QA reviews with automated fix cycles and re-verificati
 
 1. **Check VectorDB Availability**
    ```bash
-   ls ~/.${PROJECT_SLUG:-project}/context/lancedb/ 2>/dev/null && echo "VectorDB: AVAILABLE" || echo "VectorDB: NOT FOUND"
+   ls ./.lancedb/ 2>/dev/null && echo "VectorDB: AVAILABLE" || echo "VectorDB: NOT FOUND"
    ```
 
 2. **Retrieve Context**
