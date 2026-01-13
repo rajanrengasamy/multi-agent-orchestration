@@ -1,6 +1,6 @@
 {
   "name": "makeit-mao",
-  "version": "2.0.7",
+  "version": "2.1.0",
   "description": "Multi-Agent Orchestration for Claude Code - parallel agents, VectorDB context, framework-aware rules",
   "type": "module",
   "bin": {
