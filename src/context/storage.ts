@@ -6,6 +6,7 @@ import {
   PrdSection,
   TodoState,
   TodoSection,
+  TodoSectionIndexed,
   JournalEntry,
   SessionSummary,
   COLLECTIONS,
@@ -73,6 +74,21 @@ export async function initializeVectorDB(
         totalItems: 0,
         completedItems: 0,
         overallCompletionPct: 0,
+      },
+    ]);
+  }
+
+  if (!existingTables.includes(COLLECTIONS.TODO_SECTIONS)) {
+    await db.createTable(COLLECTIONS.TODO_SECTIONS, [
+      {
+        id: 'init',
+        sectionId: 'init',
+        name: 'init',
+        content: 'init',
+        items: '[]',
+        completionPct: 0,
+        sourceFile: 'init',
+        vector: new Array(config.embeddingDimensions).fill(0),
       },
     ]);
   }
@@ -161,6 +177,66 @@ export async function snapshotTodoState(
 
   await table.add([record]);
   console.log('TODO state snapshot stored');
+}
+
+/**
+ * Index TODO sections with vector embeddings for semantic search
+ */
+export async function indexTodoSections(
+  sections: TodoSectionIndexed[],
+  config: VectorDBConfig = DEFAULT_CONFIG
+): Promise<void> {
+  const db = await connect(config.dbPath);
+  const table = await db.openTable(COLLECTIONS.TODO_SECTIONS);
+
+  // Generate embeddings and prepare records
+  const records = await Promise.all(
+    sections.map(async (section) => {
+      // Create rich text for embedding: section name + all item descriptions
+      const embeddingText = [
+        `Section ${section.sectionId}: ${section.name}`,
+        ...section.items.map(
+          (item) => `${item.completed ? '[DONE]' : '[TODO]'} ${item.description}`
+        ),
+      ].join('\n');
+
+      const embedding = await getEmbedding(embeddingText, config);
+
+      return {
+        id: section.id,
+        sectionId: section.sectionId,
+        name: section.name,
+        content: section.content,
+        items: JSON.stringify(section.items),
+        completionPct: section.completionPct,
+        sourceFile: section.sourceFile,
+        vector: embedding,
+      };
+    })
+  );
+
+  await table.add(records);
+  console.log(`Indexed ${sections.length} TODO sections with embeddings`);
+}
+
+/**
+ * Clear and re-index TODO sections (for updates)
+ */
+export async function reindexTodoSections(
+  sections: TodoSectionIndexed[],
+  sourceFile: string,
+  config: VectorDBConfig = DEFAULT_CONFIG
+): Promise<void> {
+  const db = await connect(config.dbPath);
+  const table = await db.openTable(COLLECTIONS.TODO_SECTIONS);
+
+  // Delete existing sections from this source file
+  await table.delete(`sourceFile = '${sourceFile}'`);
+
+  // Index new sections
+  if (sections.length > 0) {
+    await indexTodoSections(sections, config);
+  }
 }
 
 /**
@@ -339,4 +415,29 @@ export function parseTodoMarkdown(content: string): TodoState {
     overallCompletionPct:
       totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0,
   };
+}
+
+/**
+ * Convert TodoState to indexable sections with full content
+ */
+export function todoStateToIndexedSections(
+  state: TodoState,
+  sourceFile: string
+): TodoSectionIndexed[] {
+  return state.sections.map((section) => {
+    // Build full content from all items
+    const content = section.items
+      .map((item) => `- [${item.completed ? 'x' : ' '}] ${item.description}`)
+      .join('\n');
+
+    return {
+      id: `${sourceFile}-${section.sectionId}`,
+      sectionId: section.sectionId,
+      name: section.name,
+      content,
+      items: section.items,
+      completionPct: section.completionPct,
+      sourceFile,
+    };
+  });
 }

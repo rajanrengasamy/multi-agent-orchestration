@@ -9,6 +9,7 @@ import {
   getContextBundle,
   isVectorDBAvailable,
   queryPrdSections,
+  queryTodoSections,
   getCurrentTodoState,
   queryJournalEntries,
   getRecentSessions,
@@ -50,8 +51,25 @@ async function main() {
     }
   }
 
-  // TODO State
-  console.log('=== TODO STATE ===\n');
+  // Relevant TODO Sections (semantic search)
+  console.log('=== RELEVANT TODO SECTIONS (Semantic Match) ===\n');
+  if (bundle.relevantTodoSections.length === 0) {
+    console.log('No relevant TODO sections found.');
+  } else {
+    for (const section of bundle.relevantTodoSections) {
+      const icon = section.completionPct === 100 ? '✓' : '○';
+      console.log(`${icon} Section ${section.sectionId}: ${section.name} (${section.completionPct}%)`);
+      console.log(`   Source: ${section.sourceFile}`);
+      for (const item of section.items) {
+        const checkbox = item.completed ? '[x]' : '[ ]';
+        console.log(`    ${checkbox} ${item.description}`);
+      }
+      console.log('');
+    }
+  }
+
+  // Full TODO State (snapshot)
+  console.log('=== FULL TODO STATE (Snapshot) ===\n');
   if (!bundle.todoState) {
     console.log('No TODO state found.');
   } else {

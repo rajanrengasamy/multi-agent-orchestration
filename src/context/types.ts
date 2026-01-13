@@ -79,10 +79,25 @@ export const ContextBundleSchema = z.object({
 
 export type ContextBundle = z.infer<typeof ContextBundleSchema>;
 
+// Vector-indexed TODO section for semantic search
+export const TodoSectionIndexedSchema = z.object({
+  id: z.string(),
+  sectionId: z.string(),
+  name: z.string(),
+  content: z.string(), // Full text of all items for embedding
+  items: z.array(TodoItemSchema),
+  completionPct: z.number(),
+  sourceFile: z.string(),
+  embedding: z.array(z.number()).optional(),
+});
+
+export type TodoSectionIndexed = z.infer<typeof TodoSectionIndexedSchema>;
+
 // VectorDB collection names
 export const COLLECTIONS = {
   PRD_SECTIONS: 'prd_sections',
   TODO_SNAPSHOTS: 'todo_snapshots',
+  TODO_SECTIONS: 'todo_sections', // NEW: Vector-indexed TODO sections
   JOURNAL_ENTRIES: 'journal_entries',
   SESSION_SUMMARIES: 'session_summaries',
 } as const;

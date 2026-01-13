@@ -3,6 +3,7 @@ import OpenAI from 'openai';
 import {
   PrdSection,
   TodoState,
+  TodoSectionIndexed,
   JournalEntry,
   SessionSummary,
   COLLECTIONS,
@@ -103,6 +104,41 @@ export async function getCurrentTodoState(
 }
 
 /**
+ * Query TODO sections by semantic similarity
+ */
+export async function queryTodoSections(
+  query: string,
+  limit: number = 5,
+  config: VectorDBConfig = DEFAULT_CONFIG
+): Promise<TodoSectionIndexed[]> {
+  try {
+    const db = await getDB(config);
+    const table = await db.openTable(COLLECTIONS.TODO_SECTIONS);
+    const queryEmbedding = await getEmbedding(query, config);
+
+    const results = await table
+      .vectorSearch(queryEmbedding)
+      .limit(limit)
+      .toArray();
+
+    return results
+      .filter((row) => row.id !== 'init') // Filter out init placeholder
+      .map((row) => ({
+        id: row.id as string,
+        sectionId: row.sectionId as string,
+        name: row.name as string,
+        content: row.content as string,
+        items: JSON.parse(row.items as string),
+        completionPct: row.completionPct as number,
+        sourceFile: row.sourceFile as string,
+      }));
+  } catch (error) {
+    console.error('Error querying TODO sections:', error);
+    return [];
+  }
+}
+
+/**
  * Query journal entries by semantic similarity
  */
 export async function queryJournalEntries(
@@ -174,13 +210,15 @@ export async function getContextBundle(
 ): Promise<{
   recentSessions: SessionSummary[];
   todoState: TodoState | null;
+  relevantTodoSections: TodoSectionIndexed[];
   relevantPrd: PrdSection[];
   journalEntries: JournalEntry[];
 }> {
-  const [recentSessions, todoState, relevantPrd, journalEntries] =
+  const [recentSessions, todoState, relevantTodoSections, relevantPrd, journalEntries] =
     await Promise.all([
       getRecentSessions(3, config),
       getCurrentTodoState(config),
+      queryTodoSections(query, 5, config),
       queryPrdSections(query, 5, config),
       queryJournalEntries(query, 3, config),
     ]);
@@ -188,6 +226,7 @@ export async function getContextBundle(
   return {
     recentSessions,
     todoState,
+    relevantTodoSections,
     relevantPrd,
     journalEntries,
   };

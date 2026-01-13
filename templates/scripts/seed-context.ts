@@ -11,6 +11,8 @@ import {
   initializeVectorDB,
   indexPrdSections,
   snapshotTodoState,
+  indexTodoSections,
+  todoStateToIndexedSections,
   parseMarkdownSections,
   parseTodoMarkdown,
   DEFAULT_CONFIG,
@@ -53,19 +55,29 @@ async function seedContext() {
   if (fs.existsSync(todoDir)) {
     const todoFiles = fs.readdirSync(todoDir).filter((f) => f.endsWith('.md'));
     let totalTodoItems = 0;
+    let totalTodoSections = 0;
 
     for (const file of todoFiles) {
       const content = fs.readFileSync(path.join(todoDir, file), 'utf-8');
       const todoState = parseTodoMarkdown(content);
       if (todoState.totalItems > 0) {
+        // Store snapshot for overall state tracking
         await snapshotTodoState(todoState);
         totalTodoItems += todoState.totalItems;
+
+        // Index individual sections with embeddings for semantic search
+        const indexedSections = todoStateToIndexedSections(todoState, file);
+        if (indexedSections.length > 0) {
+          await indexTodoSections(indexedSections);
+          totalTodoSections += indexedSections.length;
+        }
+
         console.log(
           `   - ${file}: ${todoState.sections.length} sections, ${todoState.totalItems} items (${todoState.overallCompletionPct}% complete)`
         );
       }
     }
-    console.log(`   Total: ${totalTodoItems} items indexed.\n`);
+    console.log(`   Total: ${totalTodoItems} items in ${totalTodoSections} vector-indexed sections.\n`);
   } else {
     console.log('   No todo/ directory found, skipping.\n');
   }
