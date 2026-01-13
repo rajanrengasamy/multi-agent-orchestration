@@ -9,6 +9,11 @@ import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  MAO_DEPENDENCIES,
+  MAO_DEV_DEPENDENCIES,
+  MAO_SCRIPTS,
+} from './mergePackageJson.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -217,6 +222,7 @@ export async function copyTemplates(options: CopyOptions): Promise<CopyResult> {
 
   const { projectName, projectSlug, targetDir } = options;
   const packageRoot = getPackageRoot();
+  const templatesDir = path.join(packageRoot, 'templates');
 
   // Ensure target directory exists
   try {
@@ -231,39 +237,39 @@ export async function copyTemplates(options: CopyOptions): Promise<CopyResult> {
     return result;
   }
 
-  // Copy .claude directory structure
-  const claudeSource = path.join(packageRoot, '.claude');
+  // Copy .claude directory structure from templates/
+  const claudeSource = path.join(templatesDir, '.claude');
   const claudeTarget = path.join(targetDir, '.claude');
 
   if (existsSync(claudeSource)) {
     await copyDirectoryAsync(claudeSource, claudeTarget, options, result);
   }
 
-  // Copy docs directory if it exists
-  const docsSource = path.join(packageRoot, 'docs');
+  // Copy docs directory from templates/ if it exists
+  const docsSource = path.join(templatesDir, 'docs');
   const docsTarget = path.join(targetDir, 'docs');
 
   if (existsSync(docsSource)) {
     await copyDirectoryAsync(docsSource, docsTarget, options, result);
   }
 
-  // Copy scripts directory
-  const scriptsSource = path.join(packageRoot, 'scripts');
+  // Copy scripts directory from templates/
+  const scriptsSource = path.join(templatesDir, 'scripts');
   const scriptsTarget = path.join(targetDir, 'scripts');
 
   if (existsSync(scriptsSource)) {
     await copyDirectoryAsync(scriptsSource, scriptsTarget, options, result);
   }
 
-  // Copy src/context directory
-  const contextSource = path.join(packageRoot, 'src', 'context');
+  // Copy src/context directory from templates/
+  const contextSource = path.join(templatesDir, 'src', 'context');
   const contextTarget = path.join(targetDir, 'src', 'context');
 
   if (existsSync(contextSource)) {
     await copyDirectoryAsync(contextSource, contextTarget, options, result);
   }
 
-  // Copy root config files
+  // Copy root config files from templates/
   const rootConfigs = [
     'tsconfig.json',
     '.env.example',
@@ -272,7 +278,7 @@ export async function copyTemplates(options: CopyOptions): Promise<CopyResult> {
   ];
 
   for (const configFile of rootConfigs) {
-    const sourcePath = path.join(packageRoot, configFile);
+    const sourcePath = path.join(templatesDir, configFile);
     const targetPath = path.join(targetDir, configFile);
 
     if (existsSync(sourcePath)) {
@@ -329,7 +335,8 @@ export async function copySubdirectory(
   };
 
   const packageRoot = getPackageRoot();
-  const sourceDir = path.join(packageRoot, subdir);
+  const templatesDir = path.join(packageRoot, 'templates');
+  const sourceDir = path.join(templatesDir, subdir);
   const targetDir = path.join(options.targetDir, subdir);
 
   if (!existsSync(sourceDir)) {
@@ -345,7 +352,20 @@ export async function copySubdirectory(
 }
 
 /**
+ * Sort object keys alphabetically
+ */
+function sortObject(obj: Record<string, string>): Record<string, string> {
+  const sorted: Record<string, string> = {};
+  const keys = Object.keys(obj).sort();
+  for (const key of keys) {
+    sorted[key] = obj[key];
+  }
+  return sorted;
+}
+
+/**
  * Generate package.json for the new project (async version)
+ * Uses shared constants from mergePackageJson.ts to avoid duplication
  */
 export async function writePackageJson(
   targetDir: string,
@@ -359,24 +379,11 @@ export async function writePackageJson(
     type: 'module',
     scripts: {
       build: 'tsc',
-      'seed-context': 'npx tsx scripts/seed-context.ts',
-      retrieve: 'npx tsx scripts/retrieve-context.ts',
       test: 'echo "No tests configured yet" && exit 0',
-      lint: 'npx prettier --check "src/**/*.ts" "scripts/**/*.ts"',
-      format: 'npx prettier --write "src/**/*.ts" "scripts/**/*.ts"',
+      ...MAO_SCRIPTS,
     },
-    dependencies: {
-      '@lancedb/lancedb': '^0.9.0',
-      dotenv: '^16.4.5',
-      openai: '^4.70.0',
-      zod: '^3.23.8',
-    },
-    devDependencies: {
-      '@types/node': '^22.10.0',
-      prettier: '^3.3.3',
-      tsx: '^4.19.2',
-      typescript: '^5.6.3',
-    },
+    dependencies: sortObject(MAO_DEPENDENCIES),
+    devDependencies: sortObject(MAO_DEV_DEPENDENCIES),
     engines: {
       node: '>=18.0.0',
     },

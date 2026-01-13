@@ -21,6 +21,7 @@ export const MAO_DEPENDENCIES: Record<string, string> = {
  */
 export const MAO_DEV_DEPENDENCIES: Record<string, string> = {
   '@types/node': '^22.10.0',
+  prettier: '^3.3.3',
   tsx: '^4.19.2',
   typescript: '^5.6.3',
 };
@@ -31,6 +32,8 @@ export const MAO_DEV_DEPENDENCIES: Record<string, string> = {
 export const MAO_SCRIPTS: Record<string, string> = {
   'seed-context': 'npx tsx scripts/seed-context.ts',
   retrieve: 'npx tsx scripts/retrieve-context.ts',
+  lint: 'npx prettier --check "src/**/*.ts" "scripts/**/*.ts"',
+  format: 'npx prettier --write "src/**/*.ts" "scripts/**/*.ts"',
 };
 
 export interface MergeResult {
@@ -202,7 +205,7 @@ export async function createPackageJson(
   try {
     const packageJson: PackageJson = {
       name: projectName,
-      version: '1.0.0',
+      version: '0.1.0',
       description: '',
       type: 'module',
       scripts: {

@@ -139,11 +139,21 @@ export async function adopt(options: AdoptOptions = {}): Promise<void> {
 
     // Step 4: Copy templates
     console.log(chalk.cyan('Copying MAO templates...'));
-    await copyTemplates({
+    const copyResult = await copyTemplates({
       projectName,
       projectSlug,
       targetDir: cwd,
     });
+
+    // Check for copy errors
+    if (copyResult.errors.length > 0) {
+      console.error(chalk.red('Failed to copy templates:'));
+      for (const err of copyResult.errors) {
+        console.error(chalk.red(`  ${err.file}: ${err.error}`));
+      }
+      process.exit(1);
+    }
+
     console.log(chalk.green('  '), 'Copied .claude/ configuration');
     console.log(chalk.green('  '), 'Copied scripts/');
     console.log(chalk.green('  '), 'Copied src/context/');

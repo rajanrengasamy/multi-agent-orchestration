@@ -96,11 +96,20 @@ export async function create(projectName: string): Promise<void> {
 
     // Copy template files
     console.log(chalk.dim('Copying template files...'));
-    await copyTemplates({
+    const copyResult = await copyTemplates({
       projectName: displayName,
       projectSlug,
       targetDir,
     });
+
+    // Check for copy errors
+    if (copyResult.errors.length > 0) {
+      console.error(chalk.red('Failed to copy templates:'));
+      for (const err of copyResult.errors) {
+        console.error(chalk.red(`  ${err.file}: ${err.error}`));
+      }
+      throw new Error('Template copying failed');
+    }
 
     // Generate package.json
     console.log(chalk.dim('Generating package.json...'));

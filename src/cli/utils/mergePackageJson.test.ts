@@ -56,7 +56,7 @@ describe('mergePackageJson utilities', () => {
       const pkg = JSON.parse(content);
 
       expect(pkg.name).toBe('my-project');
-      expect(pkg.version).toBe('1.0.0');
+      expect(pkg.version).toBe('0.1.0');
       expect(pkg.type).toBe('module');
       expect(pkg.dependencies).toMatchObject(MAO_DEPENDENCIES);
       expect(pkg.devDependencies).toMatchObject(MAO_DEV_DEPENDENCIES);
