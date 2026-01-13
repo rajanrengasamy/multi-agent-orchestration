@@ -95,7 +95,7 @@ export interface VectorDBConfig {
 }
 
 export const DEFAULT_CONFIG: VectorDBConfig = {
-  dbPath: `${process.env.HOME}/.${process.env.PROJECT_SLUG || 'project'}/context/lancedb`,
+  dbPath: './.lancedb',
   embeddingModel: 'text-embedding-3-small',
   embeddingDimensions: 1536,
 };
