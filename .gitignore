@@ -35,3 +35,6 @@ coverage/
 *.tmp
 *.temp
 /tmp/
+
+# VectorDB local storage
+.lancedb/

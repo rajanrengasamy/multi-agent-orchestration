@@ -157,6 +157,7 @@ export async function adopt(options: AdoptOptions = {}): Promise<void> {
     console.log(chalk.green('  '), 'Copied .claude/ configuration');
     console.log(chalk.green('  '), 'Copied scripts/');
     console.log(chalk.green('  '), 'Copied src/context/');
+    console.log(chalk.green('  '), 'Copied claude-project-plugin/');
     console.log();
 
     // Step 5: Merge or create package.json
@@ -247,6 +248,7 @@ export async function adopt(options: AdoptOptions = {}): Promise<void> {
     console.log(chalk.dim('  /develop <section>'), '- Develop features with parallel agents');
     console.log(chalk.dim('  /qa <section>'), '     - Run QA review');
     console.log(chalk.dim('  /setup-project'), '    - Configure project profile');
+    console.log(chalk.dim('  claude --plugin-dir ./claude-project-plugin'), '- Enable plugin commands');
     console.log();
   } catch (error: unknown) {
     if (error instanceof Error) {
