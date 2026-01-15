@@ -79,18 +79,22 @@ npx tsx scripts/retrieve-context.ts "authentication flow"
 3. **Update regularly** - Keep context fresh as the project evolves
 4. **Version control** - Commit .claude/ changes with the project
 
-## Plugin Integration
+## Session Management Skills
 
-To use the project-workflow plugin locally:
+These skills are automatically available (no setup required):
 
-```bash
-claude --plugin-dir ./claude-project-plugin
+| Skill | Purpose |
+|-------|---------|
+| `/startagain` | Bootstrap new session with VectorDB context retrieval |
+| `/journal` | Record structured session journal entry |
+| `/sync` | Git commit, pull --rebase, and push workflow |
+
+Usage:
 ```
-
-Available commands:
-- `/journal` - Record session notes
-- `/sync` - Git sync workflow
-- `/startagain` - Bootstrap new session with context
+/startagain              # Start a new session with context
+/journal                 # Record session progress
+/sync                    # Commit and push changes
+```
 
 ## Troubleshooting
 

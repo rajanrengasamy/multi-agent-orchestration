@@ -206,21 +206,15 @@ Requirements:
 └── package.json
 ```
 
-## Claude Code Plugin
+## Session Management Skills
 
-Install the companion plugin for global commands:
+Built-in skills for session workflow (automatically available):
 
-```bash
-claude --plugin-dir ./claude-project-plugin
-```
-
-### Plugin Commands
-
-| Command | Description |
-|---------|-------------|
-| `/journal` | Record session retrospective |
-| `/sync` | Git commit + rebase + push |
-| `/startagain` | Bootstrap new session with context |
+| Skill | Purpose |
+|-------|---------|
+| `/startagain` | Bootstrap new session with VectorDB context |
+| `/journal` | Record structured session entry |
+| `/sync` | Git commit, pull --rebase, push |
 
 ## Skills Reference
 

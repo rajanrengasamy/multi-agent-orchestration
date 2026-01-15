@@ -253,14 +253,6 @@ export async function copyTemplates(options: CopyOptions): Promise<CopyResult> {
     await copyDirectoryAsync(docsSource, docsTarget, options, result);
   }
 
-  // Copy claude-project-plugin directory from templates/ if it exists
-  const pluginSource = path.join(templatesDir, 'claude-project-plugin');
-  const pluginTarget = path.join(targetDir, 'claude-project-plugin');
-
-  if (existsSync(pluginSource)) {
-    await copyDirectoryAsync(pluginSource, pluginTarget, options, result);
-  }
-
   // Copy scripts directory from templates/
   const scriptsSource = path.join(templatesDir, 'scripts');
   const scriptsTarget = path.join(targetDir, 'scripts');
