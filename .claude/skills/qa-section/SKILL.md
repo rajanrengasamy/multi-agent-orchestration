@@ -5,6 +5,13 @@ context: fork
 model: opus
 thinking: ultrathink
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Task, TodoWrite
+hooks:
+  - type: PreToolUse
+    matcher: Edit|Write
+    command: "./scripts/validate-protected.sh"
+  - type: PostToolUse
+    matcher: Write|Edit
+    command: "npx prettier --write \"$CLAUDE_TOOL_INPUT_FILE_PATH\" 2>/dev/null || true"
 ---
 
 # QA Section Skill

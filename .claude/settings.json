@@ -4,5 +4,6 @@
     "MCP_TOOL_TIMEOUT": "120000",
     "MAX_MCP_OUTPUT_TOKENS": "50000"
   },
-  "model": "opus"
+  "model": "opus",
+  "plansDirectory": ".claude/plans"
 }
